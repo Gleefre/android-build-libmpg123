@@ -27,17 +27,14 @@ if [ -z $ABI ]; then
     echo $ABI
 fi
 case $ABI in
-    arm64) TARGET=aarch64-linux-android
-           ABI=arm64-v8a ;;
+    arm64 | aarch64) ABI=arm64-v8a ;;
+    arm) ABI=armeabi-v7a ;;
+    x86-64) ABI=x86_64 ;;
+esac
+case $ABI in
     arm64-v8a) TARGET=aarch64-linux-android ;;
-    aarch64) TARGET=aarch64-linux-android
-             ABI=arm64-v8a ;;
-    arm) TARGET=armv7a-linux-androideabi
-         ABI=armeabi-v7a ;;
     armeabi-v7a) TARGET=armv7a-linux-androideabi ;;
     x86) TARGET=i686-linux-android ;;
-    x86-64) TARGET=x86_64-linux-android
-            ABI=x86_64 ;;
     x86_64) TARGET=x86_64-linux-android ;;
     all)
         ABI=arm64  ./make-mpg123.sh
@@ -49,13 +46,19 @@ case $ABI in
     *) echo "Unsupported CPU ABI" && exit 1 ;;
 esac
 
+case `uname` in
+    Linux) os=linux ;;
+    Darwin) os=darwin ;;
+    *) echo "Unsupported OS" && exit 1 ;;
+esac
+TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/$os-x86_64
+
 if [ -z $API ]; then
     echo "Android API not set. Using 21 by default."
     API=21
 fi
 
 # NDK boilerplate
-export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
 export AR=$TOOLCHAIN/bin/llvm-ar
 export CC=$TOOLCHAIN/bin/$TARGET$API-clang
 export AS=$CC
@@ -63,6 +66,9 @@ export CXX=$TOOLCHAIN/bin/$TARGET$API-clang++
 export LD=$TOOLCHAIN/bin/ld.lld
 export RANLIB=$TOOLCHAIN/bin/llvm-ranlib
 export STRIP=$TOOLCHAIN/bin/llvm-strip
+export NM=$TOOLCHAIN/bin/llvm-nm
+export OBJDUMP=$TOOLCHAIN/bin/llvm-objdump
+export DLLTOOL=$TOOLCHAIN/bin/llvm-dlltool
 
 (
 cd mpg123 ;
