@@ -2,7 +2,7 @@
 set -e
 
 # Clean
-version=1.31.3
+version=1.32.10
 if [ -d ./mpg123 ]; then
     rm -rf mpg123
 fi
