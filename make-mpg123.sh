@@ -84,4 +84,5 @@ cp mpg123/src/libmpg123/.libs/libmpg123.so lib/$ABI/
 cp mpg123/src/libsyn123/.libs/libsyn123.so lib/$ABI/
 cp mpg123/src/libout123/.libs/libout123.so lib/$ABI/
 # ...and headers
-# no headers
+mkdir -p headers
+cp mpg123/src/include/*.h headers
