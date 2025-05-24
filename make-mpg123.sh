@@ -37,10 +37,10 @@ case $ABI in
     x86) TARGET=i686-linux-android ;;
     x86_64) TARGET=x86_64-linux-android ;;
     all)
-        ABI=arm64  ./make-mpg123.sh
-        ABI=arm    ./make-mpg123.sh
-        ABI=x86    ./make-mpg123.sh
-        ABI=x86-64 ./make-mpg123.sh
+        ABI=arm64-v8a ./make-mpg123.sh
+        ABI=armeabi-v7a ./make-mpg123.sh
+        ABI=x86 ./make-mpg123.sh
+        ABI=x86_64 ./make-mpg123.sh
         echo "Done."
         exit 0 ;;
     *) echo "Unsupported CPU ABI" && exit 1 ;;
